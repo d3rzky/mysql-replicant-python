@@ -43,14 +43,14 @@ class Role(object):
         server so that it is available for slaves connecting to the
         server."""
         try:
-            server.sql("DROP USER %s", (user.name))
+            server.sql("DROP USER %s", (user.name, ))
             server.sql("CREATE USER %s IDENTIFIED BY %s",
                        (user.name, user.passwd))
         except _connector.OperationalError:
             pass                # It is OK if this one fails
         finally:
             server.sql("GRANT REPLICATION SLAVE ON *.* TO %s",
-                       (user.name))
+                       (user.name, ))
 
     def _enable_binlog(self, server):
         """Enable the binlog by setting the value of the log-bin
